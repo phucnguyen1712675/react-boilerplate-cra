@@ -24,9 +24,7 @@ i18n
     debug:
       process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test',
     interpolation: {
-      /** react already safes from xss =>
-       *   https://www.i18next.com/translation-function/interpolation#unescape
-       */
+      // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
       escapeValue: false,
     },
   });

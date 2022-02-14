@@ -50,3 +50,4 @@ https://levelup.gitconnected.com/add-husky-lint-staged-to-react-typescript-b6343
 https://medium.com/geekculture/making-life-easier-with-absolute-imports-react-in-javascript-and-typescript-bbdab8a8a3a1
 https://editorconfig.org/
 https://medium.com/geekculture/strong-typed-i18n-in-react-c43281de720c
+https://redux-toolkit.js.org/tutorials/quick-start
