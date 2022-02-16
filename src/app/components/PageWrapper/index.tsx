@@ -1,14 +1,16 @@
 import { ReactNode } from 'react';
+import clsx from 'clsx';
 
 type Props = {
   children: ReactNode;
+  className?: string;
 };
 
-const PageWrapper = ({ children }: Props) => {
+const PageWrapper = ({ children, className }: Props) => {
   return (
-    <div className="my-0 mx-auto box-content w-[960px] py-0 px-6">
+    <main className={clsx('my-0 mx-auto box-content py-0 px-6', className)}>
       {children}
-    </div>
+    </main>
   );
 };
 

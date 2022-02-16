@@ -6,17 +6,22 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { ROUTE_PATHS, PrivateRoute, PublicRoute } from 'routes';
-import { Layout } from 'app/components';
 import { AuthContextProvider } from 'services/auth';
 import HomePage from 'app/pages/HomePage/Loadable';
 import LoginPage from 'app/pages/LoginPage/Loadable';
 import NotFoundPage from 'app/pages/NotFoundPage/Loadable';
+import {
+  AddPostForm,
+  PostsList,
+  EditPostForm,
+  SinglePostPage,
+} from 'app/pages/HomePage/features/posts';
+import { UserPage, UsersList } from 'app/pages/HomePage/features/users';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -36,14 +41,22 @@ const App = () => {
           <Route element={<PublicRoute />}>
             <Route path={ROUTE_PATHS.LOGIN} element={<LoginPage />} />
           </Route>
-          <Route
-            element={
-              <PrivateRoute>
-                <Layout />
-              </PrivateRoute>
-            }
-          >
-            <Route path={ROUTE_PATHS.HOME} element={<HomePage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path={ROUTE_PATHS.HOME} element={<HomePage />}>
+              <Route
+                index
+                element={
+                  <>
+                    <AddPostForm />
+                    <PostsList />
+                  </>
+                }
+              />
+              <Route path={ROUTE_PATHS.POST} element={<SinglePostPage />} />
+              <Route path={ROUTE_PATHS.EDIT_POST} element={<EditPostForm />} />
+              <Route path={ROUTE_PATHS.USERS} element={<UsersList />} />
+              <Route path={ROUTE_PATHS.USER} element={<UserPage />} />
+            </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

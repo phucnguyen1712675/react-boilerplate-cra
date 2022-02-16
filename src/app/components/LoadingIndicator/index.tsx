@@ -1,8 +1,20 @@
-import React from 'react';
+import clsx from 'clsx';
 
-const LoadingIndicator = () => {
+type Props = {
+  className?: string;
+  small?: boolean;
+};
+
+const LoadingIndicator = ({ className, small = false }: Props) => {
+  const sizeClass = small ? 'h-5 w-5' : 'h-12 w-12';
+
   return (
-    <svg className="m-5 h-5 animate-spin" viewBox="0 0 24 24">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={clsx('animate-spin', sizeClass, className)}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
       <circle
         className="opacity-25"
         cx="12"

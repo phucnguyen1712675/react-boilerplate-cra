@@ -12,6 +12,7 @@ import 'locales/i18n';
 
 // Configure store
 import store from 'store/configureStore';
+import { fetchUsers } from 'store/usersSlice';
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -23,6 +24,8 @@ openSansObserver.load().then(() => {
 });
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
+
+store.dispatch(fetchUsers());
 
 render(
   <Provider store={store}>

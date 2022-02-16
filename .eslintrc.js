@@ -27,6 +27,15 @@ module.exports = {
       { allow: ['arrowFunctions'] },
     ],
     '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        extendDefaults: true,
+        types: {
+          '{}': false,
+        },
+      },
+    ],
     'react/prop-types': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
@@ -47,14 +56,14 @@ module.exports = {
       },
     ],
     'no-shadow': 'off',
-    'max-len': [
-      'warn',
-      {
-        code: 120,
-        ignoreComments: true,
-        ignorePattern: 'd="([\\s\\S]*?)"|^import .*|^export .*',
-      },
-    ],
+    // 'max-len': [
+    //   'warn',
+    //   {
+    //     code: 120,
+    //     ignoreComments: true,
+    //     ignorePattern: 'd="([\\s\\S]*?)"|^import .*|^export .*',
+    //   },
+    // ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'import/prefer-default-export': 'off',

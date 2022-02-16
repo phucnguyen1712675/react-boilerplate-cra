@@ -1,14 +1,9 @@
-import { ReactElement } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
 
 import { ROUTE_PATHS } from 'routes';
 import { useAuthContext } from 'services/auth';
 
-type Props = {
-  children: ReactElement;
-};
-
-const PrivateRoute = ({ children }: Props) => {
+const PrivateRoute = () => {
   const { authenticated } = useAuthContext();
   const location = useLocation();
 
@@ -16,7 +11,7 @@ const PrivateRoute = ({ children }: Props) => {
     return <Navigate to={ROUTE_PATHS.LOGIN} state={{ from: location }} />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default PrivateRoute;

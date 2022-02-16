@@ -1,73 +1,94 @@
-import React from 'react';
+import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { loginSchema } from 'validations';
+import { ROUTE_PATHS } from 'routes';
+import { useFakeAuth } from 'hooks';
+import { showLoadingSwal, showErrorSwal, closeSwal } from 'utils/swal';
+import { useAuthContext } from 'services/auth';
+import { PageWrapper, Button } from 'app/components';
 import { Input, PasswordInput } from 'app/components/Form';
 
+type LocationState = {
+  from?: {
+    pathname?: string;
+  };
+};
+
 type FormValues = {
-  username: string;
+  email: string;
   password: string;
 };
 
+const loginSchema = yup.object().shape({
+  email: yup.string().email().required('Email is required'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters long'),
+});
+
 const LoginPage = () => {
   const methods = useForm<FormValues>({
-    // mode: 'onTouched',
     resolver: yupResolver(loginSchema),
   });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as LocationState | undefined;
+  const from = locationState?.from?.pathname ?? ROUTE_PATHS.HOME;
+  const auth = useAuthContext();
+  const fakeAuth = useFakeAuth();
 
-  const onSubmit = (data: FormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    showLoadingSwal();
+
+    try {
+      const exists = await fakeAuth.checkLogin(data.email, data.password);
+
+      closeSwal();
+
+      if (exists) {
+        auth.setAuthenticated(true);
+        navigate(from);
+      } else {
+        showErrorSwal('Email or password is incorrect');
+      }
+    } catch (error) {
+      closeSwal();
+      throw new Error(error as string);
+    }
   };
 
   const { handleSubmit } = methods;
 
   return (
-    <main className="flex min-h-screen w-full items-center bg-blue-100">
-      <div className="mx-auto w-full max-w-xs">
-        <h1 className="mb-4 text-center text-2xl font-bold text-blue-500">
-          Login
-        </h1>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <FormProvider {...methods}>
-          <form
-            className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-sm"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <Input
-              className="mb-4"
-              id="username"
-              label="Username"
-              placeholder="Username"
-            />
-            <PasswordInput
-              className="mb-4"
-              id="password"
-              label="Password"
-              placeholder="Password"
-            />
-            <div className="flex items-center justify-between">
-              <button
-                // eslint-disable-next-line max-len
-                className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-                type="submit"
-              >
+    <div className="flex min-h-screen w-full items-center bg-pale-blue bg-[url('assets/images/pattern-background-mobile.svg')] bg-contain bg-no-repeat xl:bg-[url('assets/images/pattern-background-desktop.svg')]">
+      <PageWrapper className="container">
+        <section className="mx-auto flex w-full max-w-xs flex-col gap-y-4 rounded-md bg-white px-8 pt-6 pb-8 shadow-2xl shadow-bright-blue/10 md:max-w-sm">
+          <h1 className="flex-initial text-center text-2xl font-bold text-dark-blue">
+            Login
+          </h1>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <FormProvider {...methods}>
+            <form
+              className="mb-4 flex flex-col gap-y-4"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Input id="email" label="Email" placeholder="Email" />
+              <PasswordInput
+                id="password"
+                label="Password"
+                placeholder="Password"
+              />
+              <Button block primary type="submit" className="mt-2">
                 Sign In
-              </button>
-              <Link
-                className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800"
-                //  TODO: add Forgot Password link
-                to="/"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-          </form>
-        </FormProvider>
-      </div>
-    </main>
+              </Button>
+            </form>
+          </FormProvider>
+        </section>
+      </PageWrapper>
+    </div>
   );
 };
 

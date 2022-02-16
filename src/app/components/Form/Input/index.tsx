@@ -1,9 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { HiExclamationCircle } from 'react-icons/hi';
-
-import { classNames } from 'helpers';
+import clsx from 'clsx';
 
 type Props = {
   id: string;
@@ -16,24 +14,23 @@ type Props = {
   className?: string;
 };
 
-const Input: FC<Props> = ({
+const Input = ({
   id,
   label,
   validation,
+  className,
   placeholder = '',
   helperText = '',
-  className = '',
   type = 'text',
   readOnly = false,
   ...rest
-}) => {
+}: Props) => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   let firstClassNamesArg;
-
   if (readOnly) {
     firstClassNamesArg =
       'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0';
@@ -58,7 +55,7 @@ const Input: FC<Props> = ({
           name={id}
           id={id}
           readOnly={readOnly}
-          className={classNames(
+          className={clsx(
             firstClassNamesArg,
             'block w-full rounded-md shadow-sm'
           )}
@@ -77,7 +74,9 @@ const Input: FC<Props> = ({
           <p className="text-xs text-gray-500">{helperText}</p>
         )}
         {errors[id] && (
-          <span className="text-sm text-red-500">{errors[id].message}</span>
+          <span className="text-sm italic text-red-500">
+            {errors[id].message}
+          </span>
         )}
       </div>
     </div>

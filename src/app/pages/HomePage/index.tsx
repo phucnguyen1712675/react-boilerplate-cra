@@ -1,5 +1,7 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Outlet } from 'react-router-dom';
+
+import { Navbar, PageWrapper } from 'app/components';
 
 const HomePage = () => {
   return (
@@ -8,11 +10,10 @@ const HomePage = () => {
         <title>Home Page</title>
         <meta name="description" content="Homepage" />
       </Helmet>
-      {/* <NavBar />
+      <Navbar />
       <PageWrapper>
-        <Masthead />
-        <Features />
-      </PageWrapper> */}
+        <Outlet />
+      </PageWrapper>
     </>
   );
 };

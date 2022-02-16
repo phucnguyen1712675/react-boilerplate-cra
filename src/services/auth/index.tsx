@@ -1,54 +1,35 @@
-import {
-  createContext,
-  useReducer,
-  useContext,
-  useMemo,
-  ReactNode,
-} from 'react';
-import {
-  AuthContextProviderState,
-  reducer,
-  initialState,
-  createSetAuthenticatedAction,
-  createSetLoadingAction,
-} from 'services/auth/reducer';
+import { ReactNode, useMemo } from 'react';
 
-interface IAuthContextType extends AuthContextProviderState {
-  setAuthenticated: (_authenticated: boolean) => void;
-  setLoading: (_loading: boolean) => void;
+import { createCtx } from 'helpers';
+import { useLocalStorage } from 'hooks';
+import type { SetValue } from 'types';
+
+interface IAuthContextType {
+  authenticated: boolean;
+  setAuthenticated: SetValue<boolean>;
 }
 
-const AuthContext = createContext<IAuthContextType>({
-  ...initialState,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setAuthenticated: (_authenticated: boolean) => {},
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setLoading: (_loading: boolean) => {},
-});
+const [useAuthContext, AuthProvider] = createCtx<IAuthContextType>();
 
 type Props = {
   children: ReactNode;
 };
 
-export const AuthContextProvider = ({ children }: Props) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const setAuthenticated = (status: boolean) =>
-    dispatch(createSetAuthenticatedAction(status));
-
-  const setLoading = (loading: boolean) =>
-    dispatch(createSetLoadingAction(loading));
+const AuthContextProvider = ({ children }: Props) => {
+  const [authenticated, setAuthenticated] = useLocalStorage(
+    'authenticated',
+    false
+  );
 
   const value = useMemo(
     () => ({
-      ...state,
+      authenticated,
       setAuthenticated,
-      setLoading,
     }),
-    [state]
+    [authenticated, setAuthenticated]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthProvider value={value}>{children}</AuthProvider>;
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export { useAuthContext, AuthContextProvider };

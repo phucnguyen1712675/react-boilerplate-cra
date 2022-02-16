@@ -2,8 +2,7 @@
 import { useState, SyntheticEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-
-import { classNames } from 'helpers';
+import clsx from 'clsx';
 
 type Props = {
   label: string;
@@ -19,9 +18,9 @@ const PasswordInput = ({
   id,
   label,
   validation,
+  className,
   placeholder = '',
   helperText = '',
-  className = '',
   readOnly = false,
   ...rest
 }: Props) => {
@@ -40,7 +39,6 @@ const PasswordInput = ({
   };
 
   let firstClassNamesArg;
-
   if (readOnly) {
     firstClassNamesArg =
       'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0';
@@ -75,7 +73,7 @@ const PasswordInput = ({
           name={id}
           id={id}
           readOnly={readOnly}
-          className={classNames(
+          className={clsx(
             firstClassNamesArg,
             'block w-full rounded-md shadow-sm'
           )}
@@ -86,7 +84,6 @@ const PasswordInput = ({
         <button
           type="button"
           onClick={handleToggle}
-          // eslint-disable-next-line max-len
           className="focus:ring-primary-500 absolute inset-y-0 right-0 mr-3 flex items-center rounded-lg p-1 focus:outline-none focus:ring"
         >
           {buttonChild}
@@ -97,7 +94,9 @@ const PasswordInput = ({
           <p className="text-xs text-gray-500">{helperText}</p>
         )}
         {errors[id] && (
-          <span className="text-sm text-red-500">{errors[id].message}</span>
+          <span className="text-sm italic text-red-500">
+            {errors[id].message}
+          </span>
         )}
       </div>
     </div>
