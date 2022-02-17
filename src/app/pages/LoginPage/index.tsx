@@ -5,16 +5,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ROUTE_PATHS } from 'routes';
 import { useFakeAuth } from 'hooks';
+import type { LocationState } from 'types';
 import { showLoadingSwal, showErrorSwal, closeSwal } from 'utils/swal';
 import { useAuthContext } from 'services/auth';
 import { PageWrapper, Button } from 'app/components';
 import { Input, PasswordInput } from 'app/components/Form';
-
-type LocationState = {
-  from?: {
-    pathname?: string;
-  };
-};
 
 type FormValues = {
   email: string;
@@ -41,10 +36,9 @@ const LoginPage = () => {
   const fakeAuth = useFakeAuth();
 
   const onSubmit = async (data: FormValues) => {
-    showLoadingSwal();
-
     try {
-      const exists = await fakeAuth.checkLogin(data.email, data.password);
+      showLoadingSwal();
+      const exists = await fakeAuth.handleLogin(data.email, data.password);
 
       closeSwal();
 

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import { HelmetProvider } from 'react-helmet-async';
 
-import 'index.css';
+import 'index.scss';
 import App from 'app';
 
 // Initialize languages

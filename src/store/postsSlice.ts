@@ -17,7 +17,7 @@ type Post = {
 };
 
 const postsAdapter = createEntityAdapter<Post>({
-  sortComparer: (a, b) => b.userId - a.userId,
+  sortComparer: (a, b) => a.id - b.id,
 });
 
 const initialState = postsAdapter.getInitialState({
@@ -48,20 +48,35 @@ export const addNewPost = createAsyncThunk(
     }
   }
 );
+export const editPost = createAsyncThunk(
+  'posts/editPost',
+  async (post: { title: string; body: string; id: number }) => {
+    const { id, ...rest } = post;
+    try {
+      const response = await axiosClient.patch(`/posts/${id}`, rest);
+      return response.data;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+);
+
+export const removePost = createAsyncThunk(
+  'posts/removePost',
+  async (postId: number) => {
+    try {
+      await axiosClient.delete(`/posts/${postId}`);
+      return postId;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+);
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {
-    postUpdated(state, action) {
-      const { id, title, body } = action.payload;
-      const existingPost = state.entities[id];
-      if (existingPost) {
-        existingPost.title = title;
-        existingPost.body = body;
-      }
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -75,7 +90,15 @@ const postsSlice = createSlice({
         state.status = REQUEST_STATUS.FAILED;
         state.error = action.error.message;
       })
-      .addCase(addNewPost.fulfilled, postsAdapter.addOne);
+      .addCase(addNewPost.fulfilled, postsAdapter.addOne)
+      .addCase(editPost.fulfilled, (state, action) => {
+        const { id, ...changes } = action.payload;
+        postsAdapter.updateOne(state, {
+          id,
+          changes,
+        });
+      })
+      .addCase(removePost.fulfilled, postsAdapter.removeOne);
   },
 });
 

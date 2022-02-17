@@ -16,8 +16,7 @@ import HomePage from 'app/pages/HomePage/Loadable';
 import LoginPage from 'app/pages/LoginPage/Loadable';
 import NotFoundPage from 'app/pages/NotFoundPage/Loadable';
 import {
-  AddPostForm,
-  PostsList,
+  PostsPage,
   EditPostForm,
   SinglePostPage,
 } from 'app/pages/HomePage/features/posts';
@@ -43,15 +42,7 @@ const App = () => {
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path={ROUTE_PATHS.HOME} element={<HomePage />}>
-              <Route
-                index
-                element={
-                  <>
-                    <AddPostForm />
-                    <PostsList />
-                  </>
-                }
-              />
+              <Route index element={<PostsPage />} />
               <Route path={ROUTE_PATHS.POST} element={<SinglePostPage />} />
               <Route path={ROUTE_PATHS.EDIT_POST} element={<EditPostForm />} />
               <Route path={ROUTE_PATHS.USERS} element={<UsersList />} />

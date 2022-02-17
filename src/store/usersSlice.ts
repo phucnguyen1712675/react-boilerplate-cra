@@ -33,7 +33,7 @@ type User = {
 
 const usersAdapter = createEntityAdapter<User>({
   selectId: (user) => user.id,
-  sortComparer: (a, b) => a.email.localeCompare(b.email),
+  sortComparer: (a, b) => a.id - b.id,
 });
 
 const initialState = usersAdapter.getInitialState();

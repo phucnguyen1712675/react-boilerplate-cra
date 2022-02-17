@@ -8,7 +8,7 @@ const useFakeAuth = () => {
   const users = useAppSelector(selectAllUsers);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const checkLogin = (email: string, _: string) => {
+  const handleLogin = (email: string, _: string) => {
     return new Promise<boolean>((resolve) => {
       setTimeout(
         () => resolve(!!users.find((user) => user.email === email)),
@@ -17,13 +17,13 @@ const useFakeAuth = () => {
     });
   };
 
-  const checkLogout = () => {
+  const handleLogout = () => {
     return new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 1000);
     });
   };
 
-  return { checkLogin, checkLogout };
+  return { handleLogin, handleLogout };
 };
 
 export default useFakeAuth;

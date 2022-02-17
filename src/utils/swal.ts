@@ -16,13 +16,21 @@ export const showLoadingSwal = () => {
 
 export const closeSwal = () => MySwal.close();
 
-export const showSuccessSwal = (text?: string) => {
+export const showSuccessSwal = ({
+  text,
+  title = 'Processing complete!',
+  showConfirmButton = false,
+}: {
+  text?: string;
+  title?: string;
+  showConfirmButton?: boolean;
+}) => {
   return MySwal.fire({
-    title: 'Processing complete!',
+    title,
     icon: 'success',
     text,
     timer: 1000,
-    showConfirmButton: false,
+    showConfirmButton,
   });
 };
 
@@ -39,5 +47,17 @@ export const showErrorSwal = (text: string) => {
     title: 'Failed!',
     icon: 'error',
     text,
+  });
+};
+
+export const showConfirmSwal = () => {
+  return Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!',
   });
 };

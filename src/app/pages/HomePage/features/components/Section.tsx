@@ -10,7 +10,7 @@ const Section = ({ className, children }: Props) => {
   return (
     <section
       className={clsx(
-        'container mx-auto flex max-w-2xl flex-col gap-y-8 px-8 pt-6 pb-8',
+        'container mx-auto flex max-w-2xl flex-col gap-y-8 pt-3 pb-4 sm:px-8 sm:pt-6 sm:pb-8',
         className
       )}
     >

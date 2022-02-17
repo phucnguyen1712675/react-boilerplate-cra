@@ -1,35 +1,53 @@
-import { useEffect } from 'react';
+import { useState, ReactNode } from 'react';
+import ReactPaginate from 'react-paginate';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
-import { LoadingIndicator } from 'app/components';
-import { fetchPosts, selectPostIds } from 'store/postsSlice';
+import { useAppSelector } from 'hooks';
+import { Spinner } from 'app/components';
+import { selectPostIds } from 'store/postsSlice';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
-import {
-  Section,
-  SectionTitle,
-} from 'app/pages/HomePage/features/posts/components';
+import { Section, SectionTitle } from 'app/pages/HomePage/features/components';
 import PostExcerpt from 'app/pages/HomePage/features/posts/PostsList/PostExcerpt';
+import styles from 'app/pages/HomePage/features/posts/PostsList/PostsList.module.scss';
+
+const POST_PER_PAGE = 10;
 
 const PostsList = () => {
-  const dispatch = useAppDispatch();
+  const [pageNumber, setPageNumber] = useState(0);
   const orderedPostIds = useAppSelector(selectPostIds);
   const postStatus = useAppSelector((state) => state.posts.status);
   const error = useAppSelector((state) => state.posts.error);
 
-  useEffect(() => {
-    if (postStatus === REQUEST_STATUS.IDLE) {
-      dispatch(fetchPosts());
-    }
-  }, [postStatus, dispatch]);
-
-  let content;
+  let content: ReactNode;
 
   if (postStatus === REQUEST_STATUS.LOADING) {
-    content = <LoadingIndicator small />;
+    content = <Spinner text="Loading" />;
   } else if (postStatus === REQUEST_STATUS.SUCCEEDED) {
-    content = orderedPostIds.map((postId) => (
-      <PostExcerpt key={postId} postId={postId} />
-    ));
+    const postsVisited = pageNumber * POST_PER_PAGE;
+    const displayedPosts = orderedPostIds
+      .slice(postsVisited, postsVisited + POST_PER_PAGE)
+      .map((postId) => <PostExcerpt key={postId} postId={postId} />);
+    const pageCount = Math.ceil(orderedPostIds.length / POST_PER_PAGE);
+
+    const handlePageChange = ({ selected }: { selected: number }) => {
+      setPageNumber(selected);
+    };
+
+    content = (
+      <>
+        {displayedPosts}
+        <ReactPaginate
+          previousLabel="Previous"
+          nextLabel="Next"
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          containerClassName={styles.paginationBtns}
+          previousLinkClassName={styles.previousBtn}
+          nextLinkClassName={styles.nextBtn}
+          disabledClassName={styles.paginationDisabled}
+          activeClassName={styles.paginationActive}
+        />
+      </>
+    );
   } else if (postStatus === REQUEST_STATUS.FAILED) {
     content = <div>{error}</div>;
   }

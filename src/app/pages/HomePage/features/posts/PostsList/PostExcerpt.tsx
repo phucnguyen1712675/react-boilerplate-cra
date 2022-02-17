@@ -28,11 +28,11 @@ const PostExcerpt = ({ postId }: Props) => {
 
   return (
     <article
-      className="border-[rgb(177, 174, 174)] flex flex-col gap-y-3 rounded-[7px] border p-4"
+      className="border-[rgb(177, 174, 174)] flex flex-col gap-y-6 rounded-[7px] border p-4"
       key={post.id}
     >
       <div>
-        <h3 className="text-2xl">{post.title}</h3>
+        <h3 className="text-2xl font-semibold">{post.title}</h3>
         <PostAuthor userId={post.userId} />
       </div>
       <p>{post.body.substring(0, 100)}</p>

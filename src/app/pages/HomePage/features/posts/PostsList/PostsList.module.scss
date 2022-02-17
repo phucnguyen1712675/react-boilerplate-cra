@@ -1,0 +1,25 @@
+.paginationBtns {
+  @apply w-full list-none mx-auto flex justify-center;
+
+  a {
+    @apply block p-[10px] m-2 rounded-md border border-bright-blue text-bright-blue cursor-pointer;
+  }
+
+  .paginationActive {
+    a {
+      @apply text-white bg-bright-blue;
+    }
+  }
+
+  .paginationDisabled {
+    a {
+      @apply text-white bg-gray-400 border-gray-400;
+    }
+  }
+
+  :not(.paginationDisabled) {
+    a {
+      @apply transition-colors hover:text-white hover:bg-bright-blue;
+    }
+  }
+}

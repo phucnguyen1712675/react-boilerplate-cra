@@ -1,41 +1,23 @@
 import { useState } from 'react';
-import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-// import { showLoadingSwal, showErrorSwal, closeSwal } from 'utils/swal';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectAllUsers } from 'store/usersSlice';
+import { showLoadingSwal, showSuccessSwal, closeSwal } from 'utils/swal';
 import { addNewPost } from 'store/postsSlice';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
 import { Button } from 'app/components';
 import { Input, Select, TextArea } from 'app/components/Form';
 import {
-  Section,
-  SectionTitle,
-} from 'app/pages/HomePage/features/posts/components';
+  AddPostFormValues,
+  addPostSchema,
+} from 'validations/posts/addPost.schema';
+import { Section, SectionTitle } from 'app/pages/HomePage/features/components';
 
-const DEFAULT_VALUE_USER_ID = 'DEFAULT_VALUE_USER_ID';
+export const DEFAULT_VALUE_USER_ID = 'DEFAULT_VALUE_USER_ID';
 
-type FormValues = {
-  title: string;
-  body: string;
-  userId: number | string;
-};
-
-const loginSchema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  body: yup
-    .string()
-    .required('Body is required')
-    .min(8, 'Body must be at least 8 characters long'),
-  userId: yup
-    .number()
-    .typeError('Please select a user')
-    .required('Author is required'),
-});
-
-const defaultValues = {
+export const addPostFormDefaultValues = {
   title: '',
   body: '',
   userId: DEFAULT_VALUE_USER_ID,
@@ -43,24 +25,33 @@ const defaultValues = {
 
 const AddPostForm = () => {
   const [addRequestStatus, setAddRequestStatus] = useState(REQUEST_STATUS.IDLE);
-  const methods = useForm<FormValues>({
-    resolver: yupResolver(loginSchema),
-    defaultValues,
+  const methods = useForm<AddPostFormValues>({
+    resolver: yupResolver(addPostSchema),
+    defaultValues: addPostFormDefaultValues,
   });
   const { handleSubmit, reset } = methods;
-
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: AddPostFormValues) => {
     setAddRequestStatus(REQUEST_STATUS.LOADING);
-    await dispatch(
-      addNewPost({
-        ...data,
-        userId: +data.userId,
-      })
-    ).unwrap();
-    reset();
-    setAddRequestStatus(REQUEST_STATUS.IDLE);
+    try {
+      showLoadingSwal();
+      await dispatch(
+        addNewPost({
+          ...data,
+          userId: +data.userId,
+        })
+      ).unwrap();
+      reset();
+      setAddRequestStatus(REQUEST_STATUS.IDLE);
+      closeSwal();
+      await showSuccessSwal({
+        title: 'Added!',
+        text: 'Post added successfully',
+      });
+    } catch (error) {
+      throw new Error(error as string);
+    }
   };
 
   const users = useAppSelector(selectAllUsers);
@@ -96,8 +87,8 @@ const AddPostForm = () => {
           <TextArea id="body" label="Body" />
           <Button
             primary
-            className="mt-2 self-start"
             type="submit"
+            className="mt-2 self-start"
             disabled={!canSave}
           >
             Save Post

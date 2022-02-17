@@ -47,6 +47,7 @@ module.exports = {
     ],
     'react/require-default-props': 'off', // Since we do not use prop-types
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'react/jsx-props-no-spreading': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -56,14 +57,6 @@ module.exports = {
       },
     ],
     'no-shadow': 'off',
-    // 'max-len': [
-    //   'warn',
-    //   {
-    //     code: 120,
-    //     ignoreComments: true,
-    //     ignorePattern: 'd="([\\s\\S]*?)"|^import .*|^export .*',
-    //   },
-    // ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'import/prefer-default-export': 'off',

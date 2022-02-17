@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, ReactElement } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import clsx from 'clsx';
@@ -38,7 +38,7 @@ const PasswordInput = ({
     togglePassword();
   };
 
-  let firstClassNamesArg;
+  let firstClassNamesArg: string;
   if (readOnly) {
     firstClassNamesArg =
       'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0';
@@ -50,7 +50,7 @@ const PasswordInput = ({
       'focus:ring-primary-500 focus:border-primary-500 border-gray-300';
   }
 
-  let buttonChild;
+  let buttonChild: ReactElement;
   if (showPassword) {
     buttonChild = (
       <HiEyeOff className="cursor-pointer text-xl text-gray-500 hover:text-gray-600" />

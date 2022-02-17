@@ -12,9 +12,9 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    showLoadingSwal();
     try {
-      await fakeAuth.checkLogout();
+      showLoadingSwal();
+      await fakeAuth.handleLogout();
       closeSwal();
       auth.setAuthenticated(false);
       navigate(ROUTE_PATHS.LOGIN);
@@ -28,7 +28,12 @@ const Navbar = () => {
     <nav className="w-full bg-pale-blue py-8 shadow-sm">
       <div className="container mx-auto flex justify-around">
         <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-dark-blue">CRUD APP</h1>
+          <Link
+            to={ROUTE_PATHS.HOME}
+            className="animated-underline text-2xl font-bold text-dark-blue"
+          >
+            CRUD APP
+          </Link>
         </div>
         {/*  <!-- left header section --> */}
         <div className="hidden items-center space-x-8 lg:flex">
@@ -40,14 +45,12 @@ const Navbar = () => {
           </Link>
         </div>
         {/*  <!-- right header section --> */}
-        <div className="flex items-center space-x-2">
-          <Button
-            className="border-none bg-gray-400 !text-white"
-            onClick={handleSignOut}
-          >
-            Sign out
-          </Button>
-        </div>
+        <Button
+          className="border-none bg-gray-400 !text-white"
+          onClick={handleSignOut}
+        >
+          Sign out
+        </Button>
       </div>
     </nav>
   );

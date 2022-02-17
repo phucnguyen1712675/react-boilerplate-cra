@@ -39,7 +39,7 @@ const Select = ({
     formState: { errors },
   } = useFormContext();
 
-  let firstClassNamesArg;
+  let firstClassNamesArg: string;
   if (readOnly) {
     firstClassNamesArg =
       'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0';
@@ -67,7 +67,7 @@ const Select = ({
 
   return (
     <div className={className}>
-      <label htmlFor={id} className="block text-sm font-normal text-gray-700">
+      <label htmlFor={id} className="block text-sm font-bold text-gray-700">
         {label}
       </label>
       <div className="relative mt-1">

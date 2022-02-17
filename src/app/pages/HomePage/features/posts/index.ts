@@ -1,3 +1,4 @@
+export { default as PostsPage } from 'app/pages/HomePage/features/posts/PostsPage';
 export { default as AddPostForm } from 'app/pages/HomePage/features/posts/AddPostForm';
 export { default as PostsList } from 'app/pages/HomePage/features/posts/PostsList';
 export { default as EditPostForm } from 'app/pages/HomePage/features/posts/EditPostForm';
