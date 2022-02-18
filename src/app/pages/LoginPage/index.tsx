@@ -9,10 +9,10 @@ import { showLoadingSwal, showErrorSwal, closeSwal } from 'utils/swal';
 import { useAuthUpdater } from 'services/auth';
 import { PageWrapper, Button } from 'app/components';
 import { Input, PasswordInput } from 'app/components/Form';
-import { LoginFormValues, loginSchema } from 'validations/users/login.schema';
+import { ILoginFormValues, loginSchema } from 'validations/users/login.schema';
 
 const LoginPage = () => {
-  const methods = useForm<LoginFormValues>({
+  const methods = useForm<ILoginFormValues>({
     resolver: yupResolver(loginSchema),
   });
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const LoginPage = () => {
   const setAuthenticated = useAuthUpdater();
   const fakeAuth = useFakeAuth();
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: ILoginFormValues) => {
     try {
       showLoadingSwal();
       const exists = await fakeAuth.handleLogin(data.email, data.password);

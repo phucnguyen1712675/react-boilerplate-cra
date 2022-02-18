@@ -11,7 +11,7 @@ import REQUEST_STATUS from 'constants/REQUEST_STATUS';
 import { Section, SectionTitle, Button } from 'app/components';
 import { Input, Select, TextArea } from 'app/components/Form';
 import {
-  AddPostFormValues,
+  IAddPostFormValues,
   addPostSchema,
 } from 'validations/posts/addPost.schema';
 
@@ -25,14 +25,14 @@ export const addPostFormDefaultValues = {
 
 const AddPostForm = () => {
   const [addRequestStatus, setAddRequestStatus] = useState(REQUEST_STATUS.IDLE);
-  const methods = useForm<AddPostFormValues>({
+  const methods = useForm<IAddPostFormValues>({
     resolver: yupResolver(addPostSchema),
     defaultValues: addPostFormDefaultValues,
   });
   const { handleSubmit, reset } = methods;
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (data: AddPostFormValues) => {
+  const onSubmit = async (data: IAddPostFormValues) => {
     setAddRequestStatus(REQUEST_STATUS.LOADING);
     try {
       showLoadingSwal();

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export interface LoginFormValues {
+export interface ILoginFormValues {
   email: string;
   password: string;
 }

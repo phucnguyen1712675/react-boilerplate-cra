@@ -49,6 +49,7 @@ export const addNewPost = createAsyncThunk(
     }
   }
 );
+
 export const editPost = createAsyncThunk(
   'posts/editPost',
   async (post: { title: string; body: string; id: EntityId }) => {

@@ -9,7 +9,7 @@ import { showLoadingSwal, showSuccessSwal, closeSwal } from 'utils/swal';
 import { Section, SectionTitle, Button } from 'app/components';
 import { Input, TextArea } from 'app/components/Form';
 import {
-  EditPostFormValues,
+  IEditPostFormValues,
   editPostSchema,
 } from 'validations/posts/editPost.schema';
 
@@ -18,7 +18,7 @@ const EditPostForm = () => {
   const post = useAppSelector((state) =>
     selectPostById(state, postId as EntityId)
   );
-  const methods = useForm<EditPostFormValues>({
+  const methods = useForm<IEditPostFormValues>({
     resolver: yupResolver(editPostSchema),
     defaultValues: {
       title: post?.title ?? '',
@@ -28,7 +28,7 @@ const EditPostForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: EditPostFormValues) => {
+  const onSubmit = async (data: IEditPostFormValues) => {
     if (postId) {
       try {
         showLoadingSwal();

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export interface EditPostFormValues {
+export interface IEditPostFormValues {
   title: string;
   body: string;
 }

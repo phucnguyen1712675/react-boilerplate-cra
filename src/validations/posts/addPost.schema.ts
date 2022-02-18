@@ -1,11 +1,11 @@
 import * as yup from 'yup';
 
 import {
-  EditPostFormValues,
+  IEditPostFormValues,
   editPostSchema,
 } from 'validations/posts/editPost.schema';
 
-export interface AddPostFormValues extends EditPostFormValues {
+export interface IAddPostFormValues extends IEditPostFormValues {
   userId: number | string;
 }
 
