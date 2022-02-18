@@ -3,6 +3,10 @@
 
   a {
     @apply block p-[10px] m-2 rounded-md border border-bright-blue text-bright-blue cursor-pointer;
+
+    &:not(.paginationDisabled) {
+      @apply transition-colors hover:text-white hover:bg-bright-blue;
+    }
   }
 
   .paginationActive {
@@ -17,9 +21,5 @@
     }
   }
 
-  :not(.paginationDisabled) {
-    a {
-      @apply transition-colors hover:text-white hover:bg-bright-blue;
-    }
-  }
+
 }

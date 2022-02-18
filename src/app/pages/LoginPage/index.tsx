@@ -28,8 +28,8 @@ const LoginPage = () => {
       const exists = await fakeAuth.handleLogin(data.email, data.password);
       if (exists) {
         setAuthenticated(true);
-        navigate(from);
         closeSwal();
+        navigate(from);
       } else {
         closeSwal();
         showErrorSwal('Email or password is incorrect');

@@ -17,8 +17,8 @@ const Navbar = () => {
       showLoadingSwal();
       await fakeAuth.handleLogout();
       setAuthenticated(false);
-      navigate(ROUTE_PATHS.LOGIN);
       closeSwal();
+      navigate(ROUTE_PATHS.LOGIN);
     } catch (error) {
       closeSwal();
       throw new Error(error as string);

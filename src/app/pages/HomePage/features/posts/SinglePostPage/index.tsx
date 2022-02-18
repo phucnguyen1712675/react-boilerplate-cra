@@ -67,12 +67,12 @@ const SinglePostPage = () => {
           if (isConfirmed) {
             showLoadingSwal();
             await dispatch(removePost(post.id)).unwrap();
-            navigate(from);
             closeSwal();
             await showSuccessSwal({
               title: 'Deleted!',
               text: 'Post edited successfully',
             });
+            navigate(from);
           }
         } catch (error) {
           closeSwal();
