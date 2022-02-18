@@ -1,10 +1,10 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 
 import { ROUTE_PATHS } from 'routes';
-import { useAuthContext } from 'services/auth';
+import { useAuthState } from 'services/auth';
 
 const PublicRoute = () => {
-  const { authenticated } = useAuthContext();
+  const authenticated = useAuthState();
   const location = useLocation();
 
   if (authenticated) {

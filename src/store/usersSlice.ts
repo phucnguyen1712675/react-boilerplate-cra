@@ -2,13 +2,14 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
+  EntityId,
 } from '@reduxjs/toolkit';
 
 import type { RootState } from 'types';
 import axiosClient from 'services/api';
 
 type User = {
-  id: number;
+  id: EntityId;
   name: string;
   username: string;
   email: string;
@@ -33,7 +34,7 @@ type User = {
 
 const usersAdapter = createEntityAdapter<User>({
   selectId: (user) => user.id,
-  sortComparer: (a, b) => a.id - b.id,
+  sortComparer: (a, b) => Number(a.id) - Number(b.id),
 });
 
 const initialState = usersAdapter.getInitialState();

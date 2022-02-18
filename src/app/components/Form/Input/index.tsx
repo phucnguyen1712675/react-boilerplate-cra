@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { useFormContext } from 'react-hook-form';
 import { HiExclamationCircle } from 'react-icons/hi';
 import clsx from 'clsx';

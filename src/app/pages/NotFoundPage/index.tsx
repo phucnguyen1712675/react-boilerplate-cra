@@ -1,30 +1,46 @@
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 import { ROUTE_PATHS } from 'routes';
+import { Navbar, PageWrapper, Section, SectionTitle } from 'app/components';
+import { CustomLink } from 'app/components/Link';
+
+type NotFoundPageLocationState = {
+  helmetTitle?: string;
+  helmetContent?: string;
+  sectionTitle?: string;
+  returnRoute?: ROUTE_PATHS;
+  instruction?: string;
+};
 
 const NotFoundPage = () => {
+  const location = useLocation();
+  const locationState = location.state as NotFoundPageLocationState | undefined;
+  const {
+    helmetTitle = '404 Page not found',
+    helmetContent = 'Page not found',
+    sectionTitle = 'Page not found!',
+    returnRoute = ROUTE_PATHS.HOME,
+    instruction = 'Return to Home Page',
+  } = locationState || {};
+
   return (
     <>
       <Helmet>
-        <title>404 Page Not Found</title>
-        <meta name="description" content="Page not found" />
+        <title>{helmetTitle}</title>
+        <meta name="description" content={helmetContent} />
       </Helmet>
-      <main className="p-4">
-        <p>Page not found</p>
-        <Link to={ROUTE_PATHS.HOME}>Return to Home Page</Link>
-      </main>
-      {/* <NavBar />
-      <Wrapper>
-        <Title>
-          4
-          <span role="img" aria-label="Crying Face">
-            😢
-          </span>
-          4
-        </Title>
-        <P>Page not found.</P>
-        <Link to={process.env.PUBLIC_URL + '/'}>Return to Home Page</Link>
-      </Wrapper> */}
+      <Navbar />
+      <PageWrapper className="p-4">
+        <Section>
+          <SectionTitle className="text-3xl text-desaturated-blue">
+            {sectionTitle}
+          </SectionTitle>
+          <CustomLink className="self-start font-semibold" to={returnRoute}>
+            {instruction}
+          </CustomLink>
+        </Section>
+      </PageWrapper>
     </>
   );
 };

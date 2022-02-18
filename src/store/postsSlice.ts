@@ -3,6 +3,7 @@ import {
   createAsyncThunk,
   createSelector,
   createEntityAdapter,
+  EntityId,
 } from '@reduxjs/toolkit';
 
 import type { RootState } from 'types';
@@ -10,14 +11,14 @@ import axiosClient from 'services/api';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
 
 type Post = {
-  id: number;
+  id: EntityId;
   title: string;
   body: string;
-  userId: number;
+  userId: EntityId;
 };
 
 const postsAdapter = createEntityAdapter<Post>({
-  sortComparer: (a, b) => a.id - b.id,
+  sortComparer: (a, b) => Number(a.id) - Number(b.id),
 });
 
 const initialState = postsAdapter.getInitialState({
@@ -39,7 +40,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 
 export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
-  async (initialPost: { title: string; body: string; userId: number }) => {
+  async (initialPost: { title: string; body: string; userId: EntityId }) => {
     try {
       const response = await axiosClient.post('/posts', initialPost);
       return response.data;
@@ -50,7 +51,7 @@ export const addNewPost = createAsyncThunk(
 );
 export const editPost = createAsyncThunk(
   'posts/editPost',
-  async (post: { title: string; body: string; id: number }) => {
+  async (post: { title: string; body: string; id: EntityId }) => {
     const { id, ...rest } = post;
     try {
       const response = await axiosClient.patch(`/posts/${id}`, rest);
@@ -63,7 +64,7 @@ export const editPost = createAsyncThunk(
 
 export const removePost = createAsyncThunk(
   'posts/removePost',
-  async (postId: number) => {
+  async (postId: EntityId) => {
     try {
       await axiosClient.delete(`/posts/${postId}`);
       return postId;
@@ -109,8 +110,15 @@ export const {
 } = postsAdapter.getSelectors<RootState>((state) => state.posts);
 
 export const selectPostsByUser = createSelector(
-  [selectAllPosts, (_, userId) => userId],
-  (posts, userId) => posts.filter((post) => post.userId === userId)
+  [selectAllPosts, (_: RootState, userId: EntityId) => userId],
+  (posts, userId) =>
+    posts.filter((post) => {
+      // Because EntityId is a union type
+      if (typeof userId === typeof post.userId) {
+        return post.userId === userId;
+      }
+      return Number(post.userId) === Number(userId);
+    })
 );
 
 export default postsSlice.reducer;

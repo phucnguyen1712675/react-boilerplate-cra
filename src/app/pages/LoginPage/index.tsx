@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -7,45 +6,32 @@ import { ROUTE_PATHS } from 'routes';
 import { useFakeAuth } from 'hooks';
 import type { LocationState } from 'types';
 import { showLoadingSwal, showErrorSwal, closeSwal } from 'utils/swal';
-import { useAuthContext } from 'services/auth';
+import { useAuthUpdater } from 'services/auth';
 import { PageWrapper, Button } from 'app/components';
 import { Input, PasswordInput } from 'app/components/Form';
-
-type FormValues = {
-  email: string;
-  password: string;
-};
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email().required('Email is required'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'Password must be at least 8 characters long'),
-});
+import { LoginFormValues, loginSchema } from 'validations/users/login.schema';
 
 const LoginPage = () => {
-  const methods = useForm<FormValues>({
+  const methods = useForm<LoginFormValues>({
     resolver: yupResolver(loginSchema),
   });
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state as LocationState | undefined;
   const from = locationState?.from?.pathname ?? ROUTE_PATHS.HOME;
-  const auth = useAuthContext();
+  const setAuthenticated = useAuthUpdater();
   const fakeAuth = useFakeAuth();
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     try {
       showLoadingSwal();
       const exists = await fakeAuth.handleLogin(data.email, data.password);
-
-      closeSwal();
-
       if (exists) {
-        auth.setAuthenticated(true);
+        setAuthenticated(true);
         navigate(from);
+        closeSwal();
       } else {
+        closeSwal();
         showErrorSwal('Email or password is incorrect');
       }
     } catch (error) {
@@ -63,7 +49,6 @@ const LoginPage = () => {
           <h1 className="flex-initial text-center text-2xl font-bold text-dark-blue">
             Login
           </h1>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <FormProvider {...methods}>
             <form
               className="mb-4 flex flex-col gap-y-4"

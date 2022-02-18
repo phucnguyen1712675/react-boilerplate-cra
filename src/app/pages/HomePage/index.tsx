@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from 'hooks';
 
+import { useAppSelector, useAppDispatch } from 'hooks';
 import { fetchPosts } from 'store/postsSlice';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
 import { Navbar, PageWrapper } from 'app/components';

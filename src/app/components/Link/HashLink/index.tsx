@@ -1,15 +1,9 @@
-import { ReactNode } from 'react';
 import clsx from 'clsx';
 
-import UnstyledLink from 'app/components/HashLink/UnstyledLink';
+import type { IUnstyledLinkProps } from 'interfaces';
+import UnstyledLink from 'app/components/Link/components/UnstyledLink';
 
-type Props = {
-  children: ReactNode;
-  href: string;
-  className?: string;
-};
-
-const HashLink = ({ className, children, ...rest }: Props) => {
+const HashLink = ({ className, children, ...rest }: IUnstyledLinkProps) => {
   return (
     <UnstyledLink
       {...rest}

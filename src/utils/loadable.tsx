@@ -29,7 +29,6 @@ export const lazyLoad = <
   ): JSX.Element {
     return (
       <Suspense fallback={opts.fallback}>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <LazyComponent {...props} />
       </Suspense>
     );

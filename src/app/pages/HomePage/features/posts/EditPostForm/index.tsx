@@ -6,13 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { editPost, selectPostById } from 'store/postsSlice';
 import { showLoadingSwal, showSuccessSwal, closeSwal } from 'utils/swal';
-import { Button } from 'app/components';
+import { Section, SectionTitle, Button } from 'app/components';
 import { Input, TextArea } from 'app/components/Form';
 import {
   EditPostFormValues,
   editPostSchema,
 } from 'validations/posts/editPost.schema';
-import { Section, SectionTitle } from 'app/pages/HomePage/features/components';
 
 const EditPostForm = () => {
   const { postId } = useParams();
@@ -47,6 +46,7 @@ const EditPostForm = () => {
           },
         });
       } catch (error) {
+        closeSwal();
         throw new Error(error as string);
       }
     }
@@ -57,7 +57,6 @@ const EditPostForm = () => {
   return (
     <Section>
       <SectionTitle>Edit Post</SectionTitle>
-      {/*  eslint-disable-next-line react/jsx-props-no-spreading */}
       <FormProvider {...methods}>
         <form
           className="mb-4 flex flex-col gap-y-4"

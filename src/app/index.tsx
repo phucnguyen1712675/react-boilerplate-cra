@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { ROUTE_PATHS, PrivateRoute, PublicRoute } from 'routes';
-import { AuthContextProvider } from 'services/auth';
+import { AuthProvider } from 'services/auth';
 import HomePage from 'app/pages/HomePage/Loadable';
 import LoginPage from 'app/pages/LoginPage/Loadable';
 import NotFoundPage from 'app/pages/NotFoundPage/Loadable';
@@ -35,7 +35,7 @@ const App = () => {
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
 
-      <AuthContextProvider>
+      <AuthProvider>
         <Routes>
           <Route element={<PublicRoute />}>
             <Route path={ROUTE_PATHS.LOGIN} element={<LoginPage />} />
@@ -51,7 +51,7 @@ const App = () => {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </AuthContextProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 };

@@ -44,7 +44,7 @@
     "lint": "eslint src",
     "prettier:fix": "prettier --write",
     "prettier:check": "prettier --check",
-    "server": "npx json-server --watch src/server/db.json --port 8000"
+    "server": "npx json-server --watch server/db.json --port 5000"
   },
   "browserslist": {
     "production": [

@@ -2,14 +2,17 @@ import { useState, ReactNode } from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { useAppSelector } from 'hooks';
-import { Spinner } from 'app/components';
 import { selectPostIds } from 'store/postsSlice';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
-import { Section, SectionTitle } from 'app/pages/HomePage/features/components';
+import { Section, SectionTitle, Spinner } from 'app/components';
 import PostExcerpt from 'app/pages/HomePage/features/posts/PostsList/PostExcerpt';
 import styles from 'app/pages/HomePage/features/posts/PostsList/PostsList.module.scss';
 
 const POST_PER_PAGE = 10;
+
+type OnPageChangeParam = {
+  selected: number;
+};
 
 const PostsList = () => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -28,7 +31,7 @@ const PostsList = () => {
       .map((postId) => <PostExcerpt key={postId} postId={postId} />);
     const pageCount = Math.ceil(orderedPostIds.length / POST_PER_PAGE);
 
-    const handlePageChange = ({ selected }: { selected: number }) => {
+    const handlePageChange = ({ selected }: OnPageChangeParam) => {
       setPageNumber(selected);
     };
 
@@ -53,8 +56,8 @@ const PostsList = () => {
   }
 
   return (
-    <Section>
-      <SectionTitle>Posts</SectionTitle>
+    <Section id="posts-list">
+      <SectionTitle to="#posts-list">Posts</SectionTitle>
       {content}
     </Section>
   );

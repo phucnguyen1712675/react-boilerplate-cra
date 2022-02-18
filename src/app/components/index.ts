@@ -4,4 +4,6 @@ export { default as Navbar } from 'app/components/Navbar';
 export { default as LoadingPage } from 'app/components/LoadingPage';
 export { default as Button } from 'app/components/Button';
 export { default as Spinner } from 'app/components/Spinner';
-export { default as HashLink } from 'app/components/HashLink';
+export { default as Lin } from 'app/components/Spinner';
+export { default as Section } from 'app/components/Section';
+export { default as SectionTitle } from 'app/components/SectionTitle';

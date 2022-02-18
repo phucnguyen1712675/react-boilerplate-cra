@@ -15,11 +15,7 @@ const PostExcerpt = ({ postId }: Props) => {
   const navigate = useNavigate();
 
   if (!post) {
-    return (
-      <section>
-        <h2>Post not found!</h2>
-      </section>
-    );
+    return null;
   }
 
   const handleViewPost = () => {

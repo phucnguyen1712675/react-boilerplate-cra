@@ -1,10 +1,10 @@
-import React from 'react';
+import { EntityId } from '@reduxjs/toolkit';
 
 import { useAppSelector } from 'hooks';
 import { selectUserById } from 'store/usersSlice';
 
 type Props = {
-  userId: number;
+  userId: EntityId;
 };
 
 const PostAuthor = ({ userId }: Props) => {

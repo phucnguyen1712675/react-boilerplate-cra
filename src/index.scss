@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding: 50px;
+  }
+}
+
 @layer utilities {
   .animated-underline {
     background-image: linear-gradient(#33333300, #33333300),
@@ -13,6 +20,24 @@
 
     &:hover, &:focus {
       background-size: 0 2px, 100% 2px;
+    }
+  }
+
+  .hash-anchor {
+    @apply relative;
+    border-bottom: 1px dotted transparent;
+
+    &:hover, &:focus {
+      border-bottom: 1px dotted currentcolor;
+
+      &:after {
+        visibility: visible;
+      }
+    }
+
+    &:after {
+      @apply absolute invisible text-lg -translate-y-1/2 -right-5 text-[#00c4fd] top-1/2;
+      content: '#';
     }
   }
 }

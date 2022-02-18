@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { EntityId } from '@reduxjs/toolkit';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { selectAllUsers } from 'store/usersSlice';
 import { showLoadingSwal, showSuccessSwal, closeSwal } from 'utils/swal';
 import { addNewPost } from 'store/postsSlice';
 import REQUEST_STATUS from 'constants/REQUEST_STATUS';
-import { Button } from 'app/components';
+import { Section, SectionTitle, Button } from 'app/components';
 import { Input, Select, TextArea } from 'app/components/Form';
 import {
   AddPostFormValues,
   addPostSchema,
 } from 'validations/posts/addPost.schema';
-import { Section, SectionTitle } from 'app/pages/HomePage/features/components';
 
 export const DEFAULT_VALUE_USER_ID = 'DEFAULT_VALUE_USER_ID';
 
@@ -39,7 +39,7 @@ const AddPostForm = () => {
       await dispatch(
         addNewPost({
           ...data,
-          userId: +data.userId,
+          userId: data.userId as EntityId,
         })
       ).unwrap();
       reset();
@@ -50,6 +50,7 @@ const AddPostForm = () => {
         text: 'Post added successfully',
       });
     } catch (error) {
+      closeSwal();
       throw new Error(error as string);
     }
   };
@@ -66,8 +67,7 @@ const AddPostForm = () => {
 
   return (
     <Section className="mt-2">
-      <SectionTitle>Add a new post</SectionTitle>
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <SectionTitle to="#add-post-form">Add a new post</SectionTitle>
       <FormProvider {...methods}>
         <form
           className="mb-4 flex flex-col gap-y-4"
